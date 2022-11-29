@@ -21,9 +21,9 @@ session_start();
   if(isset($_SESSION["id"])){
     if($_SESSION["id"] != NULL){
       $msg = $_SESSION["msg"];
-      for($i = 1; $i < count($msg); $i++){
+      for($i = 0; $i < count($msg); $i++){
           echo "<br>";
-          echo "Your Message is: " . $msg[$i]->Msg;
+          echo "Your Message is: " . $msg[$i]["Msg"];
           echo "<br>";
       }
     }
