@@ -11,13 +11,12 @@
      $connector = new Connector();
      
      $_SESSION["id"] = $id;
-     //$_SESSION["msg"] = $connector->search($id);
-     $_SESSION["msg"] = $connector->saveSearch($id);
-     
+     $_SESSION["msg"] = $connector->search($id);
+     //$_SESSION["msg"] = $connector->saveSearch($id);
+
      header("Location: Views/indexView.php");
      exit();
   }else{
     header("Location: Views/indexView.php");
     exit();
-    //echo file_get_contents("Views/indexView.php");
   }
