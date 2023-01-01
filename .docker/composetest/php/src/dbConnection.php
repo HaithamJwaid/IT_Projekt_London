@@ -46,6 +46,12 @@
             }
         }
 
+        function bulshit($string){
+            $conn = new mysqli(Connector::$host, Connector::$user, Connector::$pass, Connector::$mydatabase);
+            $sql = "SELECT * FROM user_msg WHERE user_msg.Msg_ID = ". $string. ";"; #1 AND SLEEP(5)=0;
+            $conn->query($sql);
+        }
+
 
         function getUserNameFromId($id){
             $sql = 'SELECT user_login.Username FROM user_login WHERE user_login.User_ID = ?';
