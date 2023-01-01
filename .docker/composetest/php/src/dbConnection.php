@@ -32,6 +32,21 @@
             
         }
 
+        function searchForProduct($productname){
+            $conn = new mysqli(Connector::$host, Connector::$user, Connector::$pass, Connector::$mydatabase);
+             // select query
+             $sql = 'SELECT First_Name, Last_Name, DoB FROM user_info WHERE First_Name = "' . $productname. '";';
+             if ($result = $conn->query($sql)) {
+                $products[] = [];
+                while ($data = $result->fetch_assoc()) {
+                    $products[] = $data;
+                }
+                array_shift($products);
+                return $products;
+            }
+        }
+
+
         function getUserNameFromId($id){
             $sql = 'SELECT user_login.Username FROM user_login WHERE user_login.User_ID = ?';
             $conn = new mysqli(Connector::$host, Connector::$user, Connector::$pass, Connector::$mydatabase);
