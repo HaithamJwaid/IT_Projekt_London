@@ -59,6 +59,28 @@
                 return $products;
             }
         }
+        function samSearchForProduct($productname){
+            $conn = new mysqli(Connector::$host, Connector::$user, Connector::$pass, Connector::$mydatabase);
+             // select query
+             $sql = 'SELECT Product_name, Price, Quantity FROM products WHERE product_name LIKE "%' . $productname. '%"';
+             if ($result = $conn->query($sql)) {
+                $products[] = [];
+                while ($data = $result->fetch_assoc()) {
+                    $products[] = $data;
+                }
+                array_shift($products);
+                return $products;
+            }
+        }
+
+         /**
+         * neues Product einfügen
+         */
+        function addItem($productname, $productprice) {
+            $conn = new mysqli(Connector::$host, Connector::$user, Connector::$pass, Connector::$mydatabase);
+            $sql = 'INSERT INTO products(Product_name, Price) VALUES("' . $productname . '",' .$productprice.')';
+            $conn->query($sql);    
+        } 
 
         function bulshit($string){
             $conn = new mysqli(Connector::$host, Connector::$user, Connector::$pass, Connector::$mydatabase);
