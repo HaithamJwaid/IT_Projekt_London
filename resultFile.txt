@@ -1,0 +1,2 @@
+http://localhost:8000/Views/timerIndex.php ['id'] True
+http://localhost:8000/indexWebshop.php ['searchProduct'] False

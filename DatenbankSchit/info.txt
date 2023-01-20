@@ -1,0 +1,2 @@
+Da sich die Datenbank immer cleart sobald wir den container neu bilden befinden sich in diesen Container die SQL befehle um die DBs
+zu befüllen

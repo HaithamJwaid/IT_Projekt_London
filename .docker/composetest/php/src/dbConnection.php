@@ -1,7 +1,7 @@
 <?php
 
     class Connector{
-        static $host = 'db';
+        /*static $host = 'db';
 
         // Database use name
         static $user = 'root';
@@ -11,11 +11,25 @@
 
         // database name
         static $mydatabase = 'MY_DATABASE';
+*/
+        //alternativ einstellung für maria:
+        static $host =       "mariadb";
+        static $user =       "root";
+        static $pass =       "Darius1998";
+        static $mydatabase = "MY_DATABASE";
 
         const SAFE = false;
 
         function search($id){
             $conn = new mysqli(Connector::$host, Connector::$user, Connector::$pass, Connector::$mydatabase);
+
+            
+            if ($conn->connect_error) {
+                print("Es folgt fehler meldung vom connector : ");
+                die("Connection failed: " . $conn->connect_error);
+            } 
+            
+
              // select query
              $sql = 'SELECT user_msg.Msg FROM user_msg WHERE User_ID = '. $id;
 

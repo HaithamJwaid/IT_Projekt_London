@@ -1,0 +1,160 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.0
+-- https://www.phpmyadmin.net/
+--
+-- Host: mariadb
+-- Erstellungszeit: 20. Jan 2023 um 17:25
+-- Server-Version: 10.10.2-MariaDB-1:10.10.2+maria~ubu2204
+-- PHP-Version: 8.0.19
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Datenbank: `MY_DATABASE`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `user_info`
+--
+
+CREATE TABLE `user_info` (
+  `User_ID` int(11) NOT NULL,
+  `First_Name` varchar(15) NOT NULL,
+  `Last_Name` varchar(15) NOT NULL,
+  `Address` varchar(50) DEFAULT NULL,
+  `DoB` date DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `phone` varchar(15) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Daten für Tabelle `user_info`
+--
+
+INSERT INTO `user_info` (`User_ID`, `First_Name`, `Last_Name`, `Address`, `DoB`, `email`, `phone`) VALUES
+(1, 'Franz', 'Kafka', 'Kaiserstrae 5, Regensberg', '1981-01-01', 'franz@kafka.de', '1235465522'),
+(2, 'Peter', 'Ford', 'Zuckerweg 52, Halle', '1955-05-28', 'peterQford.de', '159852648'),
+(3, 'George', 'Affe', 'Waldstrasse 80, Freiberg', '1990-06-27', 'geroge@affe.de', '142536789'),
+(4, 'Kathrine', 'Piere', 'Pariserweg 356, Freiberg', '1995-12-29', 'kat@piere.de', '147852369'),
+(5, 'Monica', 'Lalala', 'Bodenweg 55, Halle', '1989-07-19', 'mon@lala.com', '112255886'),
+(6, 'Daniel', 'Kaiser', 'Hafenbucht 88, Hamburg', '1998-10-31', 'daniel@kaiser.com', '149875632'),
+(7, 'Tina', 'Ferra', 'Redroad 212, Kalle', '1994-08-22', 'tina@ferra.com', '456789321'),
+(8, 'Jennifer', 'Sterling', '18 Oxfors street, London', '1984-11-12', 'jen@sterling.com', '45659821'),
+(9, 'Boot', 'Star', 'pariser strasse 77', '1970-03-14', 'b@star.de', '457395318'),
+(10, 'Sahra', 'Ferradia', 'Kornstrasse 99, Hanover', '2000-02-15', 'sarah@ferr.de', '546458285'),
+(11, 'Rachel', 'Green', 'Maisweg 587, Berlin', '1988-04-20', 'rachel@green.com', '753951456'),
+(12, 'Violet', 'Purple', '797 Bridge Road, London', '1973-06-14', 'violet14@purple.com', '741987852'),
+(13, 'Maya', 'Herrmann', 'Hanover Landstrasse 123, Frankfurt', '1999-05-29', 'Maya99@herrmann.de', '456852123'),
+(14, 'Chantal', 'Rosa', 'Pariserweg 12, Freiberg', '1993-01-30', 'chan@rosa.de', '658249175'),
+(15, 'Laura', 'Turm', 'Maisweg 35, Berlin', '2000-12-03', 'laura2000@turm.de', '45712369');
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `user_login`
+--
+
+CREATE TABLE `user_login` (
+  `User_ID` int(11) NOT NULL,
+  `Username` varchar(20) NOT NULL,
+  `User_Pass` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Daten für Tabelle `user_login`
+--
+
+INSERT INTO `user_login` (`User_ID`, `Username`, `User_Pass`) VALUES
+(1, 'franz', 'pass2569'),
+(2, 'peter01', 'wergwerg88'),
+(3, 'Affe', 'umktzhn'),
+(4, 'Kate', 'popogfbnfk89'),
+(5, 'Mona', 'io852hjfu8'),
+(6, 'King', '239805odfhv'),
+(7, 'Tina25', 'pkwegr7897'),
+(8, 'Jenny', 'wetw98ef6'),
+(9, 'Boot', 'sdfwer7899efr'),
+(10, 'Sahra', 'eojkfn986532'),
+(11, 'Green', '78sdf897'),
+(12, 'Violet_Pur', 'rtzu852456'),
+(13, 'Maya', 'password'),
+(14, 'Chan93', '12345'),
+(15, 'Laura', 'turm2000');
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `user_msg`
+--
+
+CREATE TABLE `user_msg` (
+  `Msg_ID` int(11) DEFAULT NULL,
+  `User_ID` int(11) DEFAULT NULL,
+  `Msg` varchar(30) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Daten für Tabelle `user_msg`
+--
+
+INSERT INTO `user_msg` (`Msg_ID`, `User_ID`, `Msg`) VALUES
+(1, 1, 'Hallo'),
+(2, 2, 'Guten Tag'),
+(3, 3, 'Bye'),
+(4, 4, 'How are you'),
+(5, 5, 'Happy Birthday'),
+(6, 6, 'Happy New Year'),
+(7, 7, 'Lets Go'),
+(8, 8, 'Come on'),
+(9, 10, 'It is Fun'),
+(10, 12, 'UAS'),
+(11, 13, 'Un deux trois'),
+(12, 15, 'LaLaLa');
+
+--
+-- Indizes der exportierten Tabellen
+--
+
+--
+-- Indizes für die Tabelle `user_info`
+--
+ALTER TABLE `user_info`
+  ADD PRIMARY KEY (`User_ID`);
+
+--
+-- Indizes für die Tabelle `user_login`
+--
+ALTER TABLE `user_login`
+  ADD PRIMARY KEY (`User_ID`),
+  ADD UNIQUE KEY `Username` (`Username`);
+
+--
+-- Indizes für die Tabelle `user_msg`
+--
+ALTER TABLE `user_msg`
+  ADD UNIQUE KEY `Msg_ID` (`Msg_ID`);
+
+--
+-- Constraints der exportierten Tabellen
+--
+
+--
+-- Constraints der Tabelle `user_login`
+--
+ALTER TABLE `user_login`
+  ADD CONSTRAINT `user_login_user_ID_fk` FOREIGN KEY (`User_ID`) REFERENCES `user_info` (`User_ID`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
