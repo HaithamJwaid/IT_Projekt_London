@@ -31,7 +31,7 @@ session_start();
         <br>
         <br>
 
-    <form method="post" action="/indexWebshop.php">
+    <form method="post" action="/samShop.php">
         <p> Search: 
         <input type="text" id="searchProduct" name="searchProduct" size="75"> 
         <input type="submit" value="Search" name="submit" >
@@ -70,7 +70,7 @@ session_start();
        ?>
 
         <br><br><br>
-        <form method = "post" action= "/indexWebshop.php">
+        <form method = "post" action= "/samShop.php">
         <p> Add Product:
         <br> <br>
         <label for= "productName"> Name: </label>
