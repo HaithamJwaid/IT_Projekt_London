@@ -1,3 +1,3 @@
-Das Inputfiled mit der id : searchProduct Auf der Website : http://localhost:8000/Views/webshopView.php hat eine sichereheits Lücke Für SQL injection! 
-datenBankName: MY_DATABASE, sqlVariante : MARIA, tabellenName: user_info,user_login,user_msg
+Das Inputfiled mit der id : searchProduct Auf der Website : http://localhost:8000/Views/samShopView.php hat Nach den Tests dieses Botes KEINE SQL injections 
+datenBankName: NICHT_ERKENBAR, sqlVariante : NICHT_ERKENBAR, tabellenName: NICHT_ERKENBAR
 Bitte beachte das dieser Bot nur bestimmte SQL injections abfragt, dass nicht finden bedeutet nicht das die websiten sicher sind

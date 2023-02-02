@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mariadb
--- Erstellungszeit: 20. Jan 2023 um 17:25
+-- Erstellungszeit: 02. Feb 2023 um 18:31
 -- Server-Version: 10.10.2-MariaDB-1:10.10.2+maria~ubu2204
 -- PHP-Version: 8.0.19
 
@@ -20,6 +20,36 @@ SET time_zone = "+00:00";
 --
 -- Datenbank: `MY_DATABASE`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `products`
+--
+
+CREATE TABLE `products` (
+  `Product_ID` int(11) NOT NULL,
+  `Product_name` varchar(100) DEFAULT NULL,
+  `Price` decimal(5,2) DEFAULT NULL,
+  `Quantity` int(11) DEFAULT 10
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Daten für Tabelle `products`
+--
+
+INSERT INTO `products` (`Product_ID`, `Product_name`, `Price`, `Quantity`) VALUES
+(1, 'Klauenhammer', '19.99', 10),
+(2, 'Kugelhammer', '14.99', 10),
+(3, 'Schlosserhammer', '24.99', 10),
+(4, 'Vorschlaghammer', '29.99', 10),
+(5, 'Nagel', '1.99', 10),
+(6, 'Hammerfgdfgdf', '12.11', 10),
+(7, 'Schrauben', '1.99', 10),
+(8, 'Eimer', '4.99', 10),
+(9, 'Pinsel', '2.99', 10),
+(10, 'rote Farbe', '5.00', 10),
+(11, 'blaue Farbe', NULL, 10);
 
 -- --------------------------------------------------------
 

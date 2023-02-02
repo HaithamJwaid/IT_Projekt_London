@@ -231,7 +231,7 @@ def writeResultInFile(result, advanced = None):
         for line in result:
             string = "Das Inputfiled mit der id : " + str(line["inputfields"][0]) + " Auf der Website : " + str(line["url"]) + " hat"
             if(line["testResult"] is True):
-                string += " eine sichereheits Lücke Für SQL injection! \n"
+                string += " eine sichereheits Luecke Fuer SQL injection! \n"
             else:
                 string += " Nach den Tests dieses Botes KEINE SQL injections \n"
             f.write(string)
@@ -311,9 +311,8 @@ def __main__():
             if datenBankName == "NICHT_ERKENBAR":
                 print("es wird versucht DB name zu erkennen")
                 datenBankName = findOutNameOFDatabaseCaller(websiteObject)
-            print("es wfolgt der DB name: ")
-            datenBankName = datenBankName[0]
-            print(datenBankName)
+            if datenBankName:
+                datenBankName = datenBankName[0]
             if sqlVariante == "NICHT_ERKENBAR":
                 print("es wird versucht variante zu erkennen")
                 sqlVariante = sqlTypidentifizierenCaller(websiteObject)
