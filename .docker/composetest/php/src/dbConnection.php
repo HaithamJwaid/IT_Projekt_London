@@ -13,7 +13,8 @@
         static $mydatabase = 'MY_DATABASE';
 */
         //alternativ einstellung für maria:
-        static $host =       "mariadb";
+        #static $host =       "mariadb";
+        static $host =       "db";
         static $user =       "root";
         static $pass =       "Darius1998";
         static $mydatabase = "MY_DATABASE";

@@ -1,1 +1,3 @@
 http://localhost:8000/Views/samShopView.php,searchProduct
+http://localhost:8000/Views/timerIndex.php,id
+http://localhost:8000/Views/timerIndex.php,id

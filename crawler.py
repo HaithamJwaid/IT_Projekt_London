@@ -312,7 +312,9 @@ def __main__():
                 print("es wird versucht DB name zu erkennen")
                 datenBankName = findOutNameOFDatabaseCaller(websiteObject)
             if datenBankName:
-                datenBankName = datenBankName[0]
+                print(type(datenBankName))
+                if len(datenBankName) == 1:
+                    datenBankName = datenBankName[0]
             if sqlVariante == "NICHT_ERKENBAR":
                 print("es wird versucht variante zu erkennen")
                 sqlVariante = sqlTypidentifizierenCaller(websiteObject)
