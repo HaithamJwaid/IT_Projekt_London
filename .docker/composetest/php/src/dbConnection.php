@@ -1,23 +1,13 @@
 <?php
 
     class Connector{
-        static $host = 'db';
 
-        // Database use name
-        static $user = 'root';
-
-        //database user password
-        static $pass = 'Darius1998';
-
-        // database name
-        static $mydatabase = 'MY_DATABASE';
-/*
-        //alternativ einstellung für maria:
+        #static $host =       "db";
         static $host =       "mariadb";
         static $user =       "root";
         static $pass =       "Darius1998";
         static $mydatabase = "MY_DATABASE";
-*/
+
         const SAFE = false;
 
         function search($id){
@@ -59,10 +49,58 @@
                 return $products;
             }
         }
+
+        function getUserNameWihtId($id){
+            $conn = new mysqli(Connector::$host, Connector::$user, Connector::$pass, Connector::$mydatabase);
+            $sql = "SELECT First_Name FROM user_info WHERE User_ID = " . $id;
+            if ($result = $conn->query($sql)) {
+                $data = $result->fetch_assoc();
+                return $data["First_Name"];
+            }
+        }
+
+        function loginUser($name, $passwowrd){
+            $conn = new mysqli(Connector::$host, Connector::$user, Connector::$pass, Connector::$mydatabase);
+             // select query
+             $sql = 'SELECT * FROM user_info WHERE First_Name = ' . "'" . $name . "'" . ' AND password = '. $passwowrd;
+             if ($result = $conn->query($sql)) {
+                $data = $result->fetch_assoc();
+                return $data;
+            }
+        }
+
+
+        #stuff for fancy button
+        function updateQuantity($quantity, $name){
+            $conn = new mysqli(Connector::$host, Connector::$user, Connector::$pass, Connector::$mydatabase);
+             // select query
+             $sql = 'UPDATE products SET Quantity = ' + $quantity + 'WHERE Product_name = '  + $name;
+             print("Wir senden");
+             print($sql);
+             $conn->query($sql);
+        }
+
+        function getFirstProduct(){
+            $conn = new mysqli(Connector::$host, Connector::$user, Connector::$pass, Connector::$mydatabase);
+             // select query
+             $sql = 'SELECT Product_name FROM products LIMIT 1;';
+
+             print("Wir senden");
+             print($sql);
+             if ($result = $conn->query($sql)) {
+                $data = $result->fetch_assoc();
+                print("Data ! ");
+                print($data);
+                return $data;
+            }
+        }
+
         function samSearchForProduct($productname){
             $conn = new mysqli(Connector::$host, Connector::$user, Connector::$pass, Connector::$mydatabase);
              // select query
              $sql = 'SELECT Product_name, Price, Quantity FROM products WHERE product_name LIKE "%' . $productname. '%"';
+             #Hammer%" UNION SELECT Product_name, Price, Quantity FROM products -- %"%";
+               
              if ($result = $conn->query($sql)) {
                 $products[] = [];
                 while ($data = $result->fetch_assoc()) {
@@ -147,6 +185,19 @@
             $return[] = $result;
 
             return $return;
+        }
+
+
+        function validateLogin($userName, $password){
+            $conn = new mysqli(Connector::$host, Connector::$user, Connector::$pass, Connector::$mydatabase);
+            $sql = "SELECT Username, User_Pass FROM user_login WHERE Username = '". $userName. "'";
+            if ($result = $conn->query($sql)) {
+                 $pass = $result->fetch_assoc();
+            }
+            if($pass != NULL){
+                if ($pass["User_Pass"] == $password) return TRUE;}
+            return FALSE;
+            
         }
     }
 ?>

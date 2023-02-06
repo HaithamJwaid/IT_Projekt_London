@@ -57,7 +57,7 @@ echo "<h2>Your Massage:</h2>";
 include "dbConnection.php";
 $connector = new Connector();
 $id = $name;
-$result = $connector->search($id);
+$result = $connector->updateQuantity($id);
 if($name != NULL){
   foreach ($result as $user) {
       echo "<br>";
