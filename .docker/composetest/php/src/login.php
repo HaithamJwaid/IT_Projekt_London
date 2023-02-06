@@ -5,7 +5,7 @@
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $userId = $_POST["userId"];
     $connector = new Connector();
-    $userName = $connector->getUserNameFromId($userId);
+    $userName = $connector->getUserInfo($userId);
 
     $_SESSION["userName"] = $userName;
 
