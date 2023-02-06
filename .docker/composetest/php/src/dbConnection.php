@@ -1,7 +1,7 @@
 <?php
 
     class Connector{
-        /*static $host = 'db';
+        static $host = 'db';
 
         // Database use name
         static $user = 'root';
@@ -11,14 +11,13 @@
 
         // database name
         static $mydatabase = 'MY_DATABASE';
-*/
+/*
         //alternativ einstellung für maria:
-        #static $host =       "mariadb";
-        static $host =       "db";
+        static $host =       "mariadb";
         static $user =       "root";
         static $pass =       "Darius1998";
         static $mydatabase = "MY_DATABASE";
-
+*/
         const SAFE = false;
 
         function search($id){
@@ -114,6 +113,24 @@
                 return $userInfo;
             }
         }
+
+        function add_user($username, $userlastname, $password) {
+            // Verbindung zur Datenbank herstellen
+            $conn = new mysqli(Connector::$host, Connector::$user, Connector::$pass, Connector::$mydatabase);
+          
+            // Query vorbereiten, um Benutzer in die Datenbank hinzuzufügen
+            $query = 'INSERT INTO user_info (First_name, Last_name, Passwort)
+                      VALUES ("' . $username . '","' .$userlastname.'","' . $password .'")';
+          
+            // Query ausführen
+            if (mysqli_query($conn, $query)) {
+              return true;
+            } else {
+              return false;
+            }
+          
+          }
+          
 
         /** 
          * Sichereheit durch prepared statment 
