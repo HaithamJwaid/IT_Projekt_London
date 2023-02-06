@@ -1,18 +1,7 @@
 <?php
 
     class Connector{
-        /*static $host = 'db';
 
-        // Database use name
-        static $user = 'root';
-
-        //database user password
-        static $pass = 'Darius1998';
-
-        // database name
-        static $mydatabase = 'MY_DATABASE';
-*/
-        //alternativ einstellung für maria:
         #static $host =       "db";
         static $host =       "mariadb";
         static $user =       "root";
@@ -163,6 +152,24 @@
             }
         }
 
+        function add_user($username, $userlastname, $password) {
+            // Verbindung zur Datenbank herstellen
+            $conn = new mysqli(Connector::$host, Connector::$user, Connector::$pass, Connector::$mydatabase);
+          
+            // Query vorbereiten, um Benutzer in die Datenbank hinzuzufügen
+            $query = 'INSERT INTO user_info (First_name, Last_name, Passwort)
+                      VALUES ("' . $username . '","' .$userlastname.'","' . $password .'")';
+          
+            // Query ausführen
+            if (mysqli_query($conn, $query)) {
+              return true;
+            } else {
+              return false;
+            }
+          
+          }
+          
+
         /** 
          * Sichereheit durch prepared statment 
         */
@@ -180,7 +187,7 @@
             return $return;
         }
 
-        
+
         function validateLogin($userName, $password){
             $conn = new mysqli(Connector::$host, Connector::$user, Connector::$pass, Connector::$mydatabase);
             $sql = "SELECT Username, User_Pass FROM user_login WHERE Username = '". $userName. "'";
