@@ -152,6 +152,7 @@
             }
         }
 
+        #Register
         function add_user($username, $userlastname, $password) {
             // Verbindung zur Datenbank herstellen
             $conn = new mysqli(Connector::$host, Connector::$user, Connector::$pass, Connector::$mydatabase);
@@ -167,6 +168,15 @@
               return false;
             }
           
+          }
+          function getUser($firstName){
+            $conn = new mysqli(Connector::$host, Connector::$user, Connector::$pass, Connector::$mydatabase);
+            $sql = 'SELECT * FROM user_info WHERE First_Name = ' . "'" . $firstName . "'";
+            // select query
+            if ($result = $conn->query($sql)) {
+               $data = $result->fetch_assoc();
+               return $data;
+           }
           }
           
 
@@ -190,12 +200,13 @@
 
         function validateLogin($userName, $password){
             $conn = new mysqli(Connector::$host, Connector::$user, Connector::$pass, Connector::$mydatabase);
-            $sql = "SELECT Username, User_Pass FROM user_login WHERE Username = '". $userName. "'";
+            $sql = "SELECT First_Name, password FROM user_info WHERE First_Name = '". $userName. "'";
+            #$sql = "SELECT Username, User_Pass FROM user_login WHERE Username = '". $userName. "'";
             if ($result = $conn->query($sql)) {
                  $pass = $result->fetch_assoc();
             }
             if($pass != NULL){
-                if ($pass["User_Pass"] == $password) return TRUE;}
+                if ($pass["password"] == $password) return TRUE;}
             return FALSE;
             
         }

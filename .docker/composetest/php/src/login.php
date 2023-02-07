@@ -23,8 +23,9 @@ if(isset($username) && isset($password)){
      $connector = new Connector();
           
      if($connector->validateLogin($username, $password)){
-     
-       header("location: Views/samShopView.php.php");
+        #positiv
+        $_SESSION['username'] = $username;
+       header("location: Views/samShopView.php");
         } 
 else{
     $_SESSION["loginError"] = TRUE;
