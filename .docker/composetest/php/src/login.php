@@ -2,10 +2,7 @@
   include "dbConnection.php";
   session_start();
 
-  if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $userId = $_POST["userId"];
-    $connector = new Connector();
-    $userName = $connector->getUserInfo($userId);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
    // Check if username is empty
    if(empty(trim($_POST["username"]))){
@@ -27,12 +24,16 @@ if(isset($username) && isset($password)){
           
      if($connector->validateLogin($username, $password)){
      
-       header("location: Views/samShopView.php");
+       header("location: Views/samShopView.php.php");
         } 
 else{
-    //$_SESSION["loginError"] = TRUE;
+    $_SESSION["loginError"] = TRUE;
+    #Falsche eingabe
     header("location: Views/loginView.php");
 }}
     exit();
     //echo file_get_contents("Views/indexView.php");
+  }
+  else {
+    header("location: Views/loginView.php");
   }
